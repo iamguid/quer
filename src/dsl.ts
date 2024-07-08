@@ -33,7 +33,7 @@ export type DSLNodeWithFieldValue<TDsl extends DSL<any, any>> = {
     [key in keyof TDsl['entity']]: { field: key, value: TDsl['types'][TDsl['entity'][key]['type']] }
 }[keyof TDsl['entity']]
 
-export type DSLLeafNodeWithFieldValues<TDsl extends DSL<any, any>> = {
+export type DSLNodeWithFieldValues<TDsl extends DSL<any, any>> = {
     [key in keyof TDsl['entity']]: { field: key, values: Array<TDsl['types'][TDsl['entity'][key]['type']]> }
 }[keyof TDsl['entity']]
 

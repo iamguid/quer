@@ -20,16 +20,13 @@ export const createTransformer = <TDsl extends DSL<any, any>, TResult>(): Transf
         }
     }
 
-    // @ts-ignore
-    const transformer = new Proxy({}, {
-        get(target: any, prop: string, receiver: any) {
-            // @ts-ignore
+    const transformer = new Proxy<Transformer<TDsl, TResult>>({} as any, {
+        get(target, prop: string, receiver) {
             if (prop.startsWith('transform')) {
                 const kind = prop.slice('transform'.length);
                 return (node: any) => handlers[`handle${kind}`](node, transformer)
             }
 
-            // @ts-ignore
             if (prop.startsWith('handle')) {
                 return (cb: (node: any, transformer: any) => TResult) => {
                     handlers[prop] = cb
