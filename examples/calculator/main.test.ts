@@ -30,12 +30,11 @@ const exprB = b.add(b => ([
     b.val({value: 5}),
 ]))
 
-const assert = MyDslAssert();
-const calcAChecked = assert(exprA);
-const calcBChecked = assert(exprB);
+const calcAChecked = MyDslAssert(exprA);
+const calcBChecked = MyDslAssert(exprB);
 
-const resultA = calculatorTransformer.transform(calcAChecked)
-const resultB = calculatorTransformer.transform(calcBChecked)
+const resultA = calculatorTransformer.transform(calcAChecked, {})
+const resultB = calculatorTransformer.transform(calcBChecked, {})
 
 console.log('resultA', resultA);
 console.log('resultB', resultB);

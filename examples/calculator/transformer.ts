@@ -17,14 +17,14 @@ const sum = (arr: number[]): number => {
 
 export const calculatorTransformer = createTransformer<MyDsl, number>()
 
-calculatorTransformer.handleVal((node, t) => {
+calculatorTransformer.handleVal((node) => {
     return node.args.value
 })
 
-calculatorTransformer.handleAdd((node, t) => {
-    return sum(node.operands.map(child => t.transform(child)))
+calculatorTransformer.handleAdd((node, t, ctx) => {
+    return sum(node.operands.map(child => t.transformAny(child, ctx)))
 })
 
-calculatorTransformer.handleSub((node, t) => {
-    return sub(node.operands.map(child => t.transform(child)))
+calculatorTransformer.handleSub((node, t, ctx) => {
+    return sub(node.operands.map(child => t.transformAny(child, ctx)))
 })

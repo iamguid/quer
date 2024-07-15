@@ -38,12 +38,11 @@ const users: User[] = [
     {age: 21, name: 'nameF', isRegistered: false},
 ]
 
-const assert = MyDslAssert();
-const calcAChecked = assert(exprA);
-const calcBChecked = assert(exprB);
+const calcAChecked = MyDslAssert(exprA);
+const calcBChecked = MyDslAssert(exprB);
 
-const resultA = calculatorTransformer.transform(calcAChecked)
-const resultB = calculatorTransformer.transform(calcBChecked)
+const resultA = calculatorTransformer.transform(calcAChecked, {})
+const resultB = calculatorTransformer.transform(calcBChecked, {})
 
 console.log('resultA', users.filter(resultA));
 console.log('resultB', users.filter(resultB));

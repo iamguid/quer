@@ -1,14 +1,13 @@
-import {TypeGuardError} from "typia/src/TypeGuardError";
-import typia from "typia";
-
 export type DSLTypesConfig<TName extends string | number | symbol, TType> = Record<TName, TType>;
 export type DSLFieldsConfig<TField extends string | number | symbol, TType> = Record<TField, TType>;
 export type DSLNodesConfig<TField extends string | number | symbol, TType extends DSLLeafNode | DSLBranchNode> = Record<TField, TType>;
+export type DSLContextConfig<TField extends string | number | symbol, TType> = Record<TField, TType>;
 
 export type DSLConfig = {
     types: DSLTypesConfig<string, any>
     fields: DSLFieldsConfig<string, any>
     nodes: DSLNodesConfig<string, any>
+    context: DSLContextConfig<string, any>
 }
 
 export type DSL<TDSLConfig extends DSLConfig> = {
@@ -16,6 +15,7 @@ export type DSL<TDSLConfig extends DSLConfig> = {
     fields: TDSLConfig['fields']
     types: TDSLConfig['types']
     nodes: DSLNodes<TDSLConfig['nodes']>
+    context: TDSLConfig['context']
     union: DSLNodes<TDSLConfig['nodes']>[keyof TDSLConfig['nodes']]
 }
 

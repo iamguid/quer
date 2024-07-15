@@ -10,5 +10,7 @@ export type MyDslNodes = {
     sub: DSLOperandsNode<MyDsl>
 }
 
-export type MyDsl = DSL<{ types: MyDslTypes, fields: MyDslFields, nodes: MyDslNodes }>
-export const MyDslAssert = (errorFactory?: undefined | ((props: TypeGuardError.IProps) => Error)) => typia.createAssert<MyDsl['union']>();
+export type MyDslContext = {}
+
+export type MyDsl = DSL<{ types: MyDslTypes, fields: MyDslFields, nodes: MyDslNodes, context: MyDslContext }>
+export const MyDslAssert = typia.createAssert<MyDsl['union']>();
