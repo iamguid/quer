@@ -13,4 +13,4 @@ export type MyDslNodes = {
 export type MyDslContext = {}
 
 export type MyDsl = DSL<{ types: MyDslTypes, fields: MyDslFields, nodes: MyDslNodes, context: MyDslContext }>
-export const MyDslAssert = typia.createAssert<MyDsl['union']>();
+export const MyDslAssert = typia.createAssertGuardEquals<MyDsl['union']>();
