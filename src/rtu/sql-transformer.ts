@@ -9,7 +9,7 @@ const handleOperator = (op: string, node: DSLNodeWithFieldValue<any>, ctx: MakeS
         case "number":
             return `${node.args.field} ${op} ${node.args.value}`
         case "string":
-            return `${node.args.field} ${op} '${node.args.value}'`
+            return `${node.args.field} ${op} "${node.args.value}"`
         case "boolean":
             return `${node.args.field} ${op} ${node.args.value ? 'TRUE' : 'FALSE'}`
         default:
