@@ -1,6 +1,5 @@
 import typia from "typia";
 import {DSLOperandsNode, DSL, DSLNodeWithFieldValue} from "../../src/dsl";
-import {TypeGuardError} from "typia/src/TypeGuardError";
 
 export type User = {
     age: number

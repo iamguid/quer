@@ -2,39 +2,62 @@ import {MyDsl, MyDslAssert} from "./dsl";
 import {createBuilder} from "../../src/builder";
 import {calculatorTransformer} from "./transformer";
 
-const exprA: MyDsl['union'] = {
-    type: 'branch',
-    kind: 'add',
-    operands: [
-        {
+describe('Calculator Example', () => {
+    const b = createBuilder<MyDsl>()
+
+    const expr = b.add(b => ([
+        b.sub(b => ([
+            b.val({value: 1}),
+            b.val({value: 2}),
+        ])),
+        b.val({value: 3}),
+        b.val({value: 5}),
+    ]))
+
+    it ('builder should build correct expression', () => {
+        expect(expr).toEqual({
             type: 'branch',
-            kind: 'sub',
+            kind: 'add',
             operands: [
-                { type: 'leaf', kind: 'val', args: { value: 1 } },
-                { type: 'leaf', kind: 'val', args: { value: 2 } },
+                {
+                    type: 'branch',
+                    kind: 'sub',
+                    operands: [
+                        { type: 'leaf', kind: 'val', args: { value: 1 } },
+                        { type: 'leaf', kind: 'val', args: { value: 2 } },
+                    ]
+                },
+                { type: 'leaf', kind: 'val', args: { value: 3 } },
+                { type: 'leaf', kind: 'val', args: { value: 5 } }
             ]
-        },
-        { type: 'leaf', kind: 'val', args: { value: 3 } },
-        { type: 'leaf', kind: 'val', args: { value: 5 } }
-    ]
-}
+        });
+    });
 
-const b = createBuilder<MyDsl>()
+    it ('should throw error if expression not correct', () => {
+        // Empty object
+        const incorrectExprA = {}
 
-const exprB = b.add(b => ([
-    b.sub(b => ([
-        b.val({value: 1}),
-        b.val({value: 2}),
-    ])),
-    b.val({value: 3}),
-    b.val({value: 5}),
-]))
+        // Missing field
+        const incorrectExprB = {
+            type: 'branch',
+            kind: 'add',
+        }
 
-const calcAChecked = MyDslAssert(exprA);
-const calcBChecked = MyDslAssert(exprB);
+        // Additional field
+        const incorrectExprC = {
+            type: 'branch',
+            kind: 'add',
+            operands: [],
+            test: 1,
+        }
 
-const resultA = calculatorTransformer.transform(calcAChecked, {})
-const resultB = calculatorTransformer.transform(calcBChecked, {})
+        expect(() => MyDslAssert(incorrectExprA)).toThrowError();
+        expect(() => MyDslAssert(incorrectExprB)).toThrowError();
+        expect(() => MyDslAssert(incorrectExprC)).toThrowError();
+    })
 
-console.log('resultA', resultA);
-console.log('resultB', resultB);
+    it('should return correct result on transform', () => {
+        const result = calculatorTransformer.transform(expr, {})
+        expect(result).toEqual(7);
+    })
+});

@@ -96,5 +96,6 @@
       }
     ],
     "strictNullChecks": true
-  }
+  },
+  "include": ["src/**/*", "examples/**/*", "test/**/*"],
 }
