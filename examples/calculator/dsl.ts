@@ -1,6 +1,5 @@
 import typia from "typia";
 import {DSLOperandsNode, DSLNodeWithValue, DSL} from "../../src/dsl";
-import {TypeGuardError} from "typia/src/TypeGuardError";
 
 export type MyDslTypes = { number: number }
 export type MyDslFields = {};

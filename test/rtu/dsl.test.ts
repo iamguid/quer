@@ -2,6 +2,7 @@ import {createBuilder} from "../../src/builder";
 import {MakeSimpleDsl} from "../../src/rtu/dsl";
 import { predicateTransformer } from "../../src/rtu/predicate-transformer";
 import { sqlTransformer } from "../../src/rtu/sql-transformer";
+import typia from "typia";
 
 describe('SimpleDsl', () => {
     type MyDslFields = {
@@ -11,6 +12,7 @@ describe('SimpleDsl', () => {
     }
 
     type MyDsl = MakeSimpleDsl<MyDslFields>;
+    const MyDslAssert = typia.createAssertGuardEquals<MyDsl['union']>();
 
     describe('fast check', () => {
         const b = createBuilder<MyDsl>()
