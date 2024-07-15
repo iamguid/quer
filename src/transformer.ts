@@ -1,18 +1,18 @@
-import {DSL, DSLNodesUnion} from "./dsl";
+import {DSL} from "./dsl";
 
 const uppercaseFirst = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
-export type Transformer<TDsl extends DSL<any, any>, TResult> = {
+export type Transformer<TDsl extends DSL<any>, TResult> = {
     [key in keyof TDsl['nodes'] as `transform${Capitalize<key extends string ? key : '???'>}`]: (node: TDsl['nodes'][key]) => TResult
 } &{
     [key in keyof TDsl['nodes'] as `handle${Capitalize<key extends string ? key : '???'>}`]: (cb: (node: TDsl['nodes'][key], transformer: Transformer<TDsl, TResult>) => TResult) => TResult
 } & {
-    transform(node: DSLNodesUnion<TDsl>): TResult
-    handle(cb: (node: DSLNodesUnion<TDsl>, transformer: Transformer<TDsl, TResult>) => TResult): TResult
+    transform(node: TDsl['union']): TResult
+    handle(cb: (node: TDsl['union'], transformer: Transformer<TDsl, TResult>) => TResult): TResult
 }
 
-export const createTransformer = <TDsl extends DSL<any, any>, TResult>(): Transformer<TDsl, TResult> => {
-    const handlers: Record<string, (node: DSLNodesUnion<TDsl>, transformer: Transformer<TDsl, TResult>) => TResult> = {
+export const createTransformer = <TDsl extends DSL<any>, TResult>(): Transformer<TDsl, TResult> => {
+    const handlers: Record<string, (node: TDsl['union'], transformer: Transformer<TDsl, TResult>) => TResult> = {
         handle: (node, transformer) => {
             const kind = node.kind as string;
             const transformerName = `transform${uppercaseFirst(kind)}`;
@@ -20,7 +20,7 @@ export const createTransformer = <TDsl extends DSL<any, any>, TResult>(): Transf
         }
     }
 
-    const transformer = new Proxy<Transformer<TDsl, TResult>>({} as any, {
+    const transformer = new Proxy({} as Transformer<TDsl, TResult>, {
         get(target, prop: string, receiver) {
             if (prop.startsWith('transform')) {
                 const kind = prop.slice('transform'.length);
