@@ -34,3 +34,11 @@ predicateTransformer.handleGt((node, t, ctx) => {
 predicateTransformer.handleLt((node, t, ctx) => {
     return (entity) => entity[node.args.field] < node.args.value
 })
+
+predicateTransformer.handleIn((node, t, ctx) => {
+    return (entity) => node.args.values.some(v => v === entity[node.args.field])
+})
+
+predicateTransformer.handleNin((node, t, ctx) => {
+    return (entity) => !node.args.values.some(v => v === entity[node.args.field])
+})

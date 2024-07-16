@@ -60,3 +60,11 @@ sqlTransformer.handleGt((node, t, ctx) => {
 sqlTransformer.handleLt((node, t, ctx) => {
     return handleOperator('<', node, ctx)
 })
+
+sqlTransformer.handleIn((node, t, ctx) => {
+    return `${node.args.field} IN (${node.args.values.map(v => typeof v === 'string' ? `"${v}"` : v).join(', ')})`
+})
+
+sqlTransformer.handleNin((node, t, ctx) => {
+    return `${node.args.field} NOT IN (${node.args.values.map(v => typeof v === 'string' ? `"${v}"` : v).join(', ')})`
+})

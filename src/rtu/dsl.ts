@@ -1,4 +1,4 @@
-import {DSL, DSLFieldsConfig, DSLNodeWithFieldValue, DSLOperandsNode} from "../dsl";
+import {DSL, DSLFieldsConfig, DSLNodeWithFieldValue, DSLNodeWithFieldValues, DSLOperandsNode} from "../dsl";
 
 export type SimpleDslTypes = {
     number: number
@@ -9,8 +9,10 @@ export type SimpleDslTypes = {
 export type SimpleDslNodes<TDsl extends DSL<any>> = {
     and: DSLOperandsNode<TDsl>
     or: DSLOperandsNode<TDsl>
-    eq: DSLNodeWithFieldValue<TDsl>
-    ne: DSLNodeWithFieldValue<TDsl>
+    in: DSLNodeWithFieldValues<TDsl, 'string' | 'number'>
+    nin: DSLNodeWithFieldValues<TDsl, 'string' | 'number'>
+    eq: DSLNodeWithFieldValue<TDsl, 'string' | 'number' | 'boolean'>
+    ne: DSLNodeWithFieldValue<TDsl, 'string' | 'number' | 'boolean'>
     gt: DSLNodeWithFieldValue<TDsl, 'number'>
     ge: DSLNodeWithFieldValue<TDsl, 'number'>
     lt: DSLNodeWithFieldValue<TDsl, 'number'>
